@@ -238,7 +238,7 @@ function startGameAudio() {
 }
 
 playBtn.addEventListener('click', startGameAudio);
-playBtn.addEventListener('touchstart', startGameAudio);
+
 
 
 const game = {
