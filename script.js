@@ -212,17 +212,6 @@ function drawBird(bx, by, bw, bh, wingPhase, col) {
     ctx.lineTo(-bw * .58, bh * .12); ctx.lineTo(-bw * .32, bh * .06); ctx.closePath(); ctx.fill();
     ctx.restore();
 }
-
-document.addEventListener('touchstart', unlockAudio, { once: true });
-document.addEventListener('mousedown', unlockAudio, { once: true });
-
-function unlockAudio() {
-  music.play().then(() => {
-    music.pause();
-    music.currentTime = 0;
-  }).catch(() => {});
-}
-
 //imagen de cj
 const cjImg = new Image();
 cjImg.src = 'cj.jpg';
@@ -234,6 +223,23 @@ music.loop = true;
 music.volume = 0.5;
 music.playbackRate = 1; // velocidad inicial
 let musicStarted = false;
+
+const playBtn = document.getElementById('play-btn');
+
+function startGameAudio() {
+    game.jump();
+  if (!musicStarted) {
+    music.play().catch(() => {});
+    musicStarted = true;
+  }
+  game.state = 'playing'; 
+  // opcional: ocultar botón
+  playBtn.style.display = 'none';
+}
+
+playBtn.addEventListener('click', startGameAudio);
+playBtn.addEventListener('touchstart', startGameAudio);
+
 
 const game = {
     state: 'start',   // 'start' | 'playing' | 'dead'
@@ -341,7 +347,7 @@ const game = {
 
     jump() {
         if (this.state === 'dead') { this.restart(); return; }
-        if (this.state === 'start') { this.state = 'playing'; music.play().catch(() => { }); return; }
+        if (this.state === 'start') { return; }
         if (this.frog.onGround || this.frog.vy > this.jumpVY() * .3) {
             this.frog.vy = this.jumpVY();
             this.frog.onGround = false;
@@ -672,7 +678,7 @@ const game = {
         const pulse = Math.sin(this.frame * .08) * 5;
         ctx.font = `${Math.round(Math.min(W, H) * .08)}px sans-serif`;
         ctx.fillStyle = '#4caf50';
-        ctx.fillText('▼ Toca para comenzar ▼', cx, H * .82 + pulse);
+        //ctx.fillText('▼ Toca para comenzar ▼', cx, H * .82 + pulse);
         ctx.textAlign = 'left';
     },
 
@@ -757,9 +763,9 @@ console.log("johanytsi ");
 document.addEventListener('keydown', e => {
     if (e.code === 'Space' || e.code === 'ArrowUp') { e.preventDefault(); game.jump(); }
 });
-canvas.addEventListener('touchstart', e => {startMusicOnce(); game.jump(); }, { passive: false });
+canvas.addEventListener('touchstart', e => { e.preventDefault(); game.jump(); }, { passive: false });
 canvas.addEventListener('mousedown', () => game.jump());
-canvas.addEventListener('click',()=>startMusicOnce());
+
 
 // ─────────────────────────────────────────────────────────────────────────────
 // LOOP
@@ -808,6 +814,8 @@ function startMusicOnce() {
         console.log("musica reproduciendo");
     }
 }
+
+
 // ─────────────────────────────────────────────────────────────────────────────
 // BOOT
 // ─────────────────────────────────────────────────────────────────────────────
