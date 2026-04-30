@@ -222,6 +222,7 @@ const music = new Audio('music.mp3');
 music.loop = true;
 music.volume = 0.5;
 music.playbackRate = 1; // velocidad inicial
+let musicStarted = false;
 
 const game = {
     state: 'start',   // 'start' | 'playing' | 'dead'
@@ -383,7 +384,7 @@ const game = {
         this.deathSound.currentTime = 0;
         music.playbackRate = 1;
         music.play().catch(() => { });
-           document.getElementById('game-over-text').style.display = 'none';
+        document.getElementById('game-over-text').style.display = 'none';
 
     },
 
@@ -675,19 +676,19 @@ const game = {
 
         // animated rainbow title
         const txt = '';
-       const isMobile = W < 600;
+        const isMobile = W < 600;
 
-// tamaño
-const imgW = isMobile ? Math.min(W, H) * 0.6 : cw * 0.3;
-const imgH = imgW;
+        // tamaño
+        const imgW = isMobile ? Math.min(W, H) * 0.6 : cw * 0.3;
+        const imgH = imgW;
 
-// posición X (siempre centrado)
-const imgX = cx - imgW / 2;
+        // posición X (siempre centrado)
+        const imgX = cx - imgW / 2;
 
-// posición Y (diferente para móvil vs PC)
-const imgY = isMobile
-  ? H * 0.22   // 📱 debajo del texto HTML
-  : cy + ch * -0.65; // 🖥️ tu posición actual
+        // posición Y (diferente para móvil vs PC)
+        const imgY = isMobile
+            ? H * 0.22   // 📱 debajo del texto HTML
+            : cy + ch * -0.65; // 🖥️ tu posición actual
 
         // pequeña animación flotante
         const float = Math.sin(this.frame * 0.05) * 8;
@@ -745,8 +746,8 @@ console.log("johanytsi ");
 document.addEventListener('keydown', e => {
     if (e.code === 'Space' || e.code === 'ArrowUp') { e.preventDefault(); game.jump(); }
 });
-canvas.addEventListener('touchstart', e => { e.preventDefault(); game.jump(); }, { passive: false });
-canvas.addEventListener('mousedown', () => game.jump());
+canvas.addEventListener('touchstart', e => { e.preventDefault(); startMusicOnce(); game.jump(); }, { passive: false });
+canvas.addEventListener('mousedown', () => game.jump()); startMusicOnce();
 
 // ─────────────────────────────────────────────────────────────────────────────
 // LOOP
@@ -787,6 +788,13 @@ btnRestart.addEventListener('click', () => {
     music.playbackRate = 1;
     music.play().catch(() => { });
 });
+
+function startMusicOnce() {
+    if (!musicStarted) {
+        music.play().catch(() => { });
+        musicStarted = true;
+    }
+}
 // ─────────────────────────────────────────────────────────────────────────────
 // BOOT
 // ─────────────────────────────────────────────────────────────────────────────
