@@ -747,7 +747,8 @@ document.addEventListener('keydown', e => {
     if (e.code === 'Space' || e.code === 'ArrowUp') { e.preventDefault(); game.jump(); }
 });
 canvas.addEventListener('touchstart', e => { e.preventDefault(); startMusicOnce(); game.jump(); }, { passive: false });
-canvas.addEventListener('mousedown', () => game.jump()); startMusicOnce();
+canvas.addEventListener('mousedown', () => game.jump());
+canvas.addEventListener('click',()=>startMusicOnce());
 
 // ─────────────────────────────────────────────────────────────────────────────
 // LOOP
@@ -793,6 +794,7 @@ function startMusicOnce() {
     if (!musicStarted) {
         music.play().catch(() => { });
         musicStarted = true;
+        console.log("musica reproduciendo");
     }
 }
 // ─────────────────────────────────────────────────────────────────────────────
