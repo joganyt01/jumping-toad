@@ -160,4 +160,7 @@ canvas {
     padding: 12px 22px;
     margin-bottom: calc(40px + env(safe-area-inset-bottom));
   }
+  #ui-overlay {
+  padding-bottom: env(safe-area-inset-bottom);
+}
 }
