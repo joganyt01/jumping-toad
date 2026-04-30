@@ -158,9 +158,6 @@ canvas {
   #play-btn {
     font-size: 18px;
     padding: 12px 22px;
-    margin-bottom: calc(260px + env(safe-area-inset-bottom));
+    margin-bottom: 25px;
   }
-  #ui-overlay {
-  padding-bottom: env(safe-area-inset-bottom);
-}
 }
