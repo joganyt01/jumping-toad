@@ -212,6 +212,17 @@ function drawBird(bx, by, bw, bh, wingPhase, col) {
     ctx.lineTo(-bw * .58, bh * .12); ctx.lineTo(-bw * .32, bh * .06); ctx.closePath(); ctx.fill();
     ctx.restore();
 }
+
+document.addEventListener('touchstart', unlockAudio, { once: true });
+document.addEventListener('mousedown', unlockAudio, { once: true });
+
+function unlockAudio() {
+  music.play().then(() => {
+    music.pause();
+    music.currentTime = 0;
+  }).catch(() => {});
+}
+
 //imagen de cj
 const cjImg = new Image();
 cjImg.src = 'cj.jpg';
@@ -746,7 +757,7 @@ console.log("johanytsi ");
 document.addEventListener('keydown', e => {
     if (e.code === 'Space' || e.code === 'ArrowUp') { e.preventDefault(); game.jump(); }
 });
-canvas.addEventListener('touchstart', e => { e.preventDefault(); startMusicOnce(); game.jump(); }, { passive: false });
+canvas.addEventListener('touchstart', e => {startMusicOnce(); game.jump(); }, { passive: false });
 canvas.addEventListener('mousedown', () => game.jump());
 canvas.addEventListener('click',()=>startMusicOnce());
 
